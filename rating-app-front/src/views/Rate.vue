@@ -2,22 +2,24 @@
   <el-container>
     <div class="big-row">
       <el-row type="flex" justify="center">
-        <el-col :xs="18" :sm="18" :md="18" :lg="8">
+        <el-col :xs="18" :sm="18" :md="12" :lg="8">
           <el-card shadow="never" class="box-card">
             <div slot="header" class="clearfix">
-              <span><strong>{{ requester }}</strong> is asking for your evaluation</span>
+              <span><strong>{{ requester }}</strong> is asking for your opinion</span>
             </div>
             <div class="rate-component">
               <el-row>
-                <el-col :span="24">
-                  <span>Service description</span>
+                <el-col :span="15">
+                  <div>
+                    <span class="label">Service description</span>
+                  </div>
+                  <div>
+                    <span class="service-description">{{ description }}</span>
+                  </div>
                 </el-col>
-                <el-col :span="24">
-                  <h4>{{ description }}</h4>
-                </el-col>
-                <el-col :span="24">
+                <el-col :span="9">
                   <div class="rate-element">
-                    <el-rate v-model="evaluation"></el-rate>
+                    <el-rate v-model="evaluation" :texts="rateLabels"></el-rate>
                   </div>
                 </el-col>
                 <el-col :span="24">
@@ -61,7 +63,8 @@ export default {
     return {
       requester: 'Teste',
       evaluation: 0,
-      description: 'Lorem ipsum dolor sit amet',
+      description: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ',
+      rateLabels: ['Bad', 'Im disapointed', 'Could be better', 'It was nice.', 'Awesome!'],
     };
   },
   computed: {
@@ -106,23 +109,36 @@ export default {
 
   .box-card {
     padding-bottom: 20px;
+    background-color: #FDFDFD;
+  }
+
+  .rate-component {
+    text-align: left;
+  }
+
+  .rate-component .label {
+    font-size: 14px;
+    color: #666;
   }
 
   .rate-element {
-    width: 300px;
-    height: 100px;
-    margin: 0 auto;
-    padding: 20px 0;
+    padding: 10px 0;
     box-sizing: border-box;
+    text-align: center;
   }
 
   .btn-rate-user {
     width: 300px;
     height: 70px;
-    margin: 0 auto;
+    margin: 30px auto 0;
     border-radius: 35px;
+    box-shadow: 0 2px 3px #bbb;
+    background-color: #FFF;
+    transition: box-shadow .2s ease-out;
+  }
+
+  .btn-rate-user:hover {
     box-shadow: 0 5px 5px #ddd;
-    border: 1px solid #EEE;
   }
 
   .user-picture {
@@ -149,8 +165,7 @@ export default {
     width: 220px;
     height: 70px;
     float: left;
-    text-align: left;
-    margin-left: 10px;
+    margin-left: 0px;
   }
 
   .user-info .rate-label {
