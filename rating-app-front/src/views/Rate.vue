@@ -1,39 +1,52 @@
 <template>
   <el-container>
-    <el-row type="flex" justify="center" class="big-row">
-      <el-col :xs="18" :sm="18" :md="18" :lg="12">
-        <el-card shadow="always" class="box-card">
-          <div slot="header" class="clearfix">
-            <span><strong>{{ requester }}</strong> is asking for your evaluation</span>
-          </div>
-          <div class="rate-component">
-            <el-row>
-              <el-col :span="24">
-                <span>Service description</span>
-              </el-col>
-              <el-col :span="24">
-                <h4>{{ description }}</h4>
-              </el-col>
-              <el-col :span="24">
-                <el-rate v-model="evaluation"></el-rate>
-              </el-col>
-              <el-col :span="24">
-                <div v-if="authorized">
-                  <el-card>
-                    <!-- {{ user }} -->
-                    <img :src="user.picture" :alt="user.name">
-                    <span>Rate as <strong>{{ user.name }}</strong></span>
-                  </el-card>
-                </div>
-                <div v-else>
-                  <el-button @click="loginClick">Login</el-button>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <div class="big-row">
+      <el-row type="flex" justify="center">
+        <el-col :xs="18" :sm="18" :md="18" :lg="8">
+          <el-card shadow="never" class="box-card">
+            <div slot="header" class="clearfix">
+              <span><strong>{{ requester }}</strong> is asking for your evaluation</span>
+            </div>
+            <div class="rate-component">
+              <el-row>
+                <el-col :span="24">
+                  <span>Service description</span>
+                </el-col>
+                <el-col :span="24">
+                  <h4>{{ description }}</h4>
+                </el-col>
+                <el-col :span="24">
+                  <div class="rate-element">
+                    <el-rate v-model="evaluation"></el-rate>
+                  </div>
+                </el-col>
+                <el-col :span="24">
+                  <div v-if="authorized">
+                    <div class="btn-rate-user">
+                      <div class="user-picture">
+                        <div class="picture">
+                          <img :src="user.picture" :alt="user.name">
+                        </div>
+                      </div>
+                      <div class="user-info">
+                        <div class="rate-label">
+                          <span>Rating as</span>
+                        </div>
+                        <div class="username">{{ user.name }}</div>
+                        <div class="usermail">{{ user.email }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <el-button @click="loginClick">Login</el-button>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
   </el-container>
 </template>
 
@@ -85,18 +98,79 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
   .big-row {
     width: 100%;
     margin-top: 50px;
   }
 
-  .rate-component .el-rate {
-    height:70px;
+  .box-card {
+    padding-bottom: 20px;
   }
 
-  .rate-component .el-rate__icon{
-    line-height: 70px;
-    font-size: 40px;
+  .rate-element {
+    width: 300px;
+    height: 100px;
+    margin: 0 auto;
+    padding: 20px 0;
+    box-sizing: border-box;
   }
+
+  .btn-rate-user {
+    width: 300px;
+    height: 70px;
+    margin: 0 auto;
+    border-radius: 35px;
+    box-shadow: 0 5px 5px #ddd;
+    border: 1px solid #EEE;
+  }
+
+  .user-picture {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    float: left;
+  }
+
+  .picture {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 2px solid #BBB;
+  }
+
+  .picture img {
+    width: 100%;
+  }
+
+  .user-info {
+    width: 220px;
+    height: 70px;
+    float: left;
+    text-align: left;
+    margin-left: 10px;
+  }
+
+  .user-info .rate-label {
+    font-size: 12px;
+    color: #666;
+    line-height: 14px;
+    margin-top: 8px;
+  }
+
+  .user-info .username {
+    line-height: 24px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .user-info .usermail {
+    line-height: 14px;
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+  }
+
 </style>
