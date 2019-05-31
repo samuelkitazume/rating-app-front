@@ -5,7 +5,21 @@
         <el-col :xs="18" :sm="18" :md="12" :lg="8">
           <el-card shadow="never" class="box-card">
             <div slot="header" class="clearfix">
-              <span><strong>{{ requester }}</strong> is asking for your opinion</span>
+              <div class="sender-component">
+                <div class="sender-picture-box">
+                  <div class="sender-picture">
+                    <img :src="sender.picture" alt="">
+                  </div>
+                </div>
+                <div class="sender-info">
+                  <div class="sender-name">
+                    <span>{{ sender.name }}</span>
+                  </div>
+                  <div class="asking-label">
+                    <span>is asking for opinion</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="rate-component">
               <el-row>
@@ -53,15 +67,11 @@
 </template>
 
 <script>
-import Requester from '../requester';
-
-const requester = new Requester();
-
 export default {
   name: 'Rate',
   data: function data() {
     return {
-      requester: 'Teste',
+      sender: {},
       evaluation: 0,
       description: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ',
       rateLabels: ['Bad', 'Im disapointed', 'Could be better', 'It was nice.', 'Awesome!'],
@@ -74,6 +84,16 @@ export default {
     user: function user() {
       return this.$store.state.userData;
     },
+  },
+  mounted: async function mounted() {
+    try {
+      const serviceRequest = await this.$axios.get(`/services/${this.$route.params.hash}`);
+      const { service, sender } = serviceRequest.data;
+      this.sender = sender;
+      this.description = service.description;
+    } catch (e) {
+      throw new Error(e);
+    }
   },
   methods: {
     async loginClick() {
@@ -88,7 +108,7 @@ export default {
           email: profile.getEmail(),
           token: profile.getId(),
         };
-        const jwt = await requester.post('http://localhost:3001/login', user);
+        const jwt = await this.$axios.post('/login', user);
         this.$store.commit('setToken', jwt.data.token);
         console.log(this.$store.state.authorization);
       } catch (err) {
@@ -186,6 +206,47 @@ export default {
     font-size: 12px;
     color: #666;
     font-style: italic;
+  }
+
+  .sender-component {
+    width: 300px;
+    height: 70px;
+    margin: 0 auto;
+    display: inline-block;
+  }
+
+  .sender-picture-box {
+    width: 70px;
+    height: 70px;
+    float: left;
+  }
+
+  .sender-picture {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .sender-picture, .sender-picture img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .sender-info {
+    text-align: left;
+    float: left;
+    padding-left: 15px;
+  }
+
+  .sender-name {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .asking-label {
+    font-size: 18px;
+    font-style: italic;
+    color: #999;
   }
 
 </style>
